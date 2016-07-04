@@ -25,3 +25,8 @@ hs_err_pid*
 *.index
 *.metadata
 *bin
+*.settings
+*mvnw
+*.mvn
+*target
+*mvnw.cmd
