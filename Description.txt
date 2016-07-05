@@ -1,3 +1,44 @@
+Implement a decks detail end point that uses the above two endpoints and prepares a combined  
+
+response with deck detailed info resolved. You can use language of your choice.
+
+­ This endpoint should implement pageToken param as supported via  /users/{username}/decks endpoint.
+
+­ How would you implement this endpoint without significantly increasing the response  time?  
+ 
+Answer:
+
+The following is the implementation/design for the combined response end point.
+ - We have a Cards class which has the card id, description and its payload.
+ - We have a DecksWithCards class which consists of id, description and cards list for each deck.
+ - We can collect all the decks with cards into a HashMap and identify each deck by its Id.
+ - Since a HashMap is implemented the search is O(1). 
+ - Thus the CombinedResponse class is thus implemented using this HashMap by constructing a 
+   list of DeckWithCards along with	nextPageToken and resultEstimateSize which gives the total results present.
+
+-  How would you handle timeouts from //decks/{id} endpoint? 
+
+Answer:
+
+	- The timeouts can be handled by configuring a RestTemplate in the application configuration file.
+	- Here in Spring applications, a 'bean' can be created and used throughout the application.
+	- A simple implementation would look like the following:
+	
+		@Bean
+	    public RestTemplate restTemplate() {
+	        return new RestTemplate(clientHttpRequestFactory());
+	    }
+
+	    private ClientHttpRequestFactory clientHttpRequestFactory() {
+	        HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();	      
+	        factory.setConnectTimeout(5000);
+	        return factory;
+	    }
+	 
+	 - Hence the connection timeouts can be set in  HttpComponentsClientHttpRequestFactory factory
+	 	and can be used across the application.
+	    
+	
 Design Description:
 
 Assumptions:
