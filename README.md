@@ -2,8 +2,15 @@
 
 The Environment set-up is as follows:
 1. The web-application was built as a Spring application.
-2. Download maven and set its path in the PATH variable.
-3. To check if it is installed properly, open command prompt and type the following:
+
+The Application start-up can be done by importing the code into an eclipse/STS tool.
+
+The Application under the package- com.vurb named as "VurbExamApplication" can be run from there.
+
+OR
+
+1. Download maven and set its path in the PATH variable.
+2. To check if it is installed properly, open command prompt and type the following:
 	>mvn --version
 	
 	It should give the output something like this specifying maven version:
