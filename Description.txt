@@ -1,0 +1,70 @@
+Design Description:
+
+Assumptions:
+
+1. It is assumed that there is a single user (user1) who owns several decks.
+
+2. Each deck owned by the user is identified by its unique 'id'.
+
+3. Every deck consists of set of cards and its information.
+
+4. For the REST call which shows all the decks, the paginated results consist of 10 deck entries in each page.
+
+5. For the REST call which shows the combined response, the paginated results consist of 5 deck entries in each page.
+
+6. A singleton class is designed to build the Deck data. This class is used throughout to access the deck data.
+
+NOTE: We can either use the browser or client like Postman to invoke the REST Services.
+
+REST Calls to be made to get the desired output :
+
+1.  GET /users/{username}/decks
+
+	URL: localhost:8080/users/user1/decks
+
+	Description:
+		1. Here the userName is considered to be "user1". 
+		2. This request will return the user with 10 entries.
+		3. The response contains "nextPageToken" which indicates the next page number.
+		4. Using the next page number as a part of the request, we can get the next pages using the next REST call.
+		 
+ 2. GET /users/{username}/decks/{pageNumber}
+ 
+ 	URL: localhost:8080/users/user1/decks/2
+ 	
+ 	Description:
+ 		1. So the response to this query gives us the 2nd page results.
+ 		2. The "nextPageToken" again indicates the page number of next page if exists
+ 			or simply returns a value of '1' saying there are no more pages and the 
+ 			next page is the first page.
+ 			
+ 3. GET /decks/{id}
+ 
+ 	URL: localhost:8080/decks/1
+ 	
+ 	Description:
+ 		1. The above call returns the response for a specified deck based on its id.
+ 		2. This response contains the deckId, description and cards collection.
+ 		3. If an Id other than id's present is given, an Error message saying "The 
+ 			deck Id is not present" is returned to the user.
+
+4.  GET /users/user1/decks/combinedResponse 		
+	
+    URL: localhost:8080/users/user1/decks/combinedResponse	
+    
+    Description:
+		1. Here the userName is considered to be "user1". 
+		2. This request will return the user with 5 deck entries.
+		3. The response contains "nextPageToken" which indicates the next page number.
+		4. Using the next page number as a part of the request, we can get the next pages using the next REST call.
+
+5. 	GET /users/user1/decks/combinedResponse/{pageNumber} 		
+	
+    URL: localhost:8080/users/user1/decks/combinedResponse/2
+    
+    Description:
+ 		1. So the response to this query gives us the 2nd page results.
+ 		2. The "nextPageToken" again indicates the page number of next page if exists
+ 			or simply returns a value of '1' saying there are no more pages and the 
+ 			next page is the first page.
+    	
