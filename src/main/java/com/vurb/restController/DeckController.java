@@ -156,7 +156,7 @@ public class DeckController {
 		(deckConstants.getDeckWithCards());
 		//Check if the given page number is within the range of the pages divided		
 		if(pgNo > Math.ceil(deckWithCards.size()/5.0)){
-			return "\"Error\" : \"Page Number does not exist\"";
+			return "{\"Error\" : \"Page Number does not exist\"}";
 		}	
 		
 		CombinedResponse combinedResponse = new CombinedResponse();
