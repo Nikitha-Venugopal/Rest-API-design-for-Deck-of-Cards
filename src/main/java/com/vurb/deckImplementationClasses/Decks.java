@@ -1,6 +1,6 @@
 package com.vurb.deckImplementationClasses;
 
-public class DeckWithoutCards {
+public class Decks {
 	private int id;
 	private String description;
 	public int getId() {

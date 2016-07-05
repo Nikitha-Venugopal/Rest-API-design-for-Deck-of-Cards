@@ -20,7 +20,7 @@ import com.vurb.constants.DeckData;
 import com.vurb.deckImplementationClasses.CombinedResponse;
 import com.vurb.deckImplementationClasses.Deck;
 import com.vurb.deckImplementationClasses.DeckWithCards;
-import com.vurb.deckImplementationClasses.DeckWithoutCards;
+import com.vurb.deckImplementationClasses.Decks;
 
 @RestController
 public class DeckController {
@@ -34,7 +34,7 @@ public class DeckController {
 	@RequestMapping(value="/users/user1/decks", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	private String getAllDeckData(HttpServletRequest request) throws JsonProcessingException{
-		ArrayList<DeckWithoutCards> deckDetails = new ArrayList<DeckWithoutCards>();
+		ArrayList<Decks> deckDetails = new ArrayList<Decks>();
 		for(int i=0 ;i<10; i++){
 			if(i < deckConstants.getDeckwithoutCardsList().size())
 				deckDetails.add(i,deckConstants.getDeckwithoutCardsList().get(i));
@@ -60,13 +60,14 @@ public class DeckController {
 	private String getPaginatedDeckData(@PathVariable int pgNo,HttpServletRequest request) throws JsonProcessingException{
 		//Check if the given page number is within the range of the pages divided		
 		if(pgNo > Math.ceil(deckConstants.getDeckwithoutCardsList().size()/10.0)){
-			return "Page Number does not exist";
+			return "{\"Error\" : \"Page Number does not exist\"}";
+			
 		}
 		else{
 			// Find the start index using the page number present in the request and give the next 10 results.
 			int startIndex = (pgNo-1) * 10; 
-			ArrayList<DeckWithoutCards> deckDetails = new ArrayList<DeckWithoutCards>();
-			ArrayList<DeckWithoutCards> allDeckDetails= new ArrayList<DeckWithoutCards>();
+			ArrayList<Decks> deckDetails = new ArrayList<Decks>();
+			ArrayList<Decks> allDeckDetails= new ArrayList<Decks>();
 			allDeckDetails = deckConstants.getDeckwithoutCardsList();
 			for(int i=0 ;i<10; i++){
 				
@@ -99,7 +100,7 @@ public class DeckController {
 	@ResponseBody
 	private String getDeckDataWithId(@PathVariable int id,HttpServletRequest request) throws JsonProcessingException{
 		if(id == 0){
-			return "Id starts from 1";
+			return "{ \"Error\": \"Id starts from 1\"";
 		}
 		HashMap<Integer,DeckWithCards> deckWithCards = new LinkedHashMap<Integer,DeckWithCards>
 															(deckConstants.getDeckWithCards());
@@ -109,7 +110,7 @@ public class DeckController {
 			deckWithId = deckWithCards.get(id);	
 		}
 		else{
-			return "The Deck for given Id does not exist";
+			return "{\"Error\":\"The Deck for given Id does not exist\"";
 		}
 		ObjectMapper obj = new ObjectMapper();
 		String result = obj.writeValueAsString(deckWithId);
@@ -155,7 +156,7 @@ public class DeckController {
 		(deckConstants.getDeckWithCards());
 		//Check if the given page number is within the range of the pages divided		
 		if(pgNo > Math.ceil(deckWithCards.size()/5.0)){
-			return "Page Number does not exist";
+			return "\"Error\" : \"Page Number does not exist\"";
 		}	
 		
 		CombinedResponse combinedResponse = new CombinedResponse();

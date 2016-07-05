@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 public class Deck {
 	
-	ArrayList<DeckWithoutCards> deckWithoutCards;
+	ArrayList<Decks> decks;
 	int nextPageToken;
 	int resultSizeEstimate;
 	
-	public Deck(ArrayList<DeckWithoutCards> deckWithoutCards, int nextPageToken, int resultSizeEstimate){
-		this.deckWithoutCards = deckWithoutCards;
+	public Deck(ArrayList<Decks> decks, int nextPageToken, int resultSizeEstimate){
+		this.decks = decks;
 		this.nextPageToken = nextPageToken;
 		this.resultSizeEstimate = resultSizeEstimate;
 	}
-	public ArrayList<DeckWithoutCards> getDeckWithoutCards() {
-		return deckWithoutCards;
+	public ArrayList<Decks> getDecks() {
+		return decks;
 	}
-	public void setDeckWithoutCards(ArrayList<DeckWithoutCards> deckWithoutCards) {
-		this.deckWithoutCards = deckWithoutCards;
+	public void setDecks(ArrayList<Decks> decks) {
+		this.decks = decks;
 	}
 	public int getNextPageToken() {
 		return nextPageToken;

@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 
 import com.vurb.deckImplementationClasses.Cards;
 import com.vurb.deckImplementationClasses.DeckWithCards;
-import com.vurb.deckImplementationClasses.DeckWithoutCards;
+import com.vurb.deckImplementationClasses.Decks;
 import com.vurb.deckImplementationClasses.Payload;
 
 @Service
 @Scope("singleton")
 public class DeckData {
 	private  static ArrayList<Cards> cardList = new ArrayList<Cards>();
-	private  static ArrayList<DeckWithoutCards> deckwithoutCardsList = new ArrayList<DeckWithoutCards>();
+	private  static ArrayList<Decks> deckwithoutCardsList = new ArrayList<Decks>();
 	private  static HashMap<Integer,DeckWithCards> deckWithCards = new LinkedHashMap<Integer,DeckWithCards>();;
 	
 	
@@ -29,12 +29,12 @@ public class DeckData {
 		this.cardList = cardList;
 	}
 
-	public ArrayList<DeckWithoutCards> getDeckwithoutCardsList() {
+	public ArrayList<Decks> getDeckwithoutCardsList() {
 		return deckwithoutCardsList;
 	}
 
 	public void setDeckwithoutCardsList(
-			ArrayList<DeckWithoutCards> deckwithoutCardsList) {
+			ArrayList<Decks> deckwithoutCardsList) {
 		this.deckwithoutCardsList = deckwithoutCardsList;
 	}
 
@@ -71,13 +71,13 @@ public class DeckData {
 	//The following function builds a list of deck data which just has the Id and description
 	public void addDecksWithoutCards(){	
 		
-		DeckWithoutCards dwcardsDummy = new DeckWithoutCards();
+		Decks dwcardsDummy = new Decks();
 		dwcardsDummy.setId(0);
 		dwcardsDummy.setDescription("");
 		deckwithoutCardsList.add(dwcardsDummy);
 		
 		for(int i=1; i<=10; i++){
-			DeckWithoutCards dwcards = new DeckWithoutCards();
+			Decks dwcards = new Decks();
 			dwcards.setId(i);
 			dwcards.setDescription("description "+ i);
 			deckwithoutCardsList.add(dwcards);
