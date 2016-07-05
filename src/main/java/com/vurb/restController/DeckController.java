@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,22 +29,17 @@ public class DeckController {
 	DeckData deckConstants;
 	
 	
-	@RequestMapping(value = "/test", method = RequestMethod.GET, produces = "application/json")
-	@ResponseBody
-	private String getUserId(HttpServletRequest request) throws JSONException {
-		JSONObject json = new JSONObject();
-		json.put("data", "Hi I am from this application");
-		
-		return json.toString();
-	
-	}
-	
+	//The following function is the decks end point that returns the 1st page of desks result.
+	//Each page consists of 10 entries.
 	@RequestMapping(value="/users/user1/decks", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	private String getAllDeckData(HttpServletRequest request) throws JsonProcessingException{
 		ArrayList<DeckWithoutCards> deckDetails = new ArrayList<DeckWithoutCards>();
 		for(int i=0 ;i<10; i++){
-			deckDetails.add(i,deckConstants.getDeckwithoutCardsList().get(i));
+			if(i < deckConstants.getDeckwithoutCardsList().size())
+				deckDetails.add(i,deckConstants.getDeckwithoutCardsList().get(i));
+			else
+				break;
 		}
 		
 		int totalResults = deckConstants.getDeckwithoutCardsList().size();
@@ -60,6 +53,8 @@ public class DeckController {
 		return result;
 	}
 	
+	//The following function is the decks end point that returns the desks result based on the page number
+	//Each page consists of 10 entries.
 	@RequestMapping(value="/users/user1/decks/{pgNo}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	private String getPaginatedDeckData(@PathVariable int pgNo,HttpServletRequest request) throws JsonProcessingException{
@@ -132,12 +127,58 @@ public class DeckController {
 		
 		CombinedResponse combinedResponse = new CombinedResponse();
 		ArrayList<DeckWithCards> finalDeckList = new ArrayList<DeckWithCards>();
+		int count = 5;
 		for(Map.Entry<Integer,DeckWithCards> d: deckWithCards.entrySet()){
-			finalDeckList.add(d.getValue());
+			if(count > 0){
+				finalDeckList.add(d.getValue());
+				count--;
+			}			
 		}
 		combinedResponse.setDecks(finalDeckList);
 		combinedResponse.setNextPageToken(2);
-		combinedResponse.setResultSizeEstimate(10);
+		combinedResponse.setResultSizeEstimate(deckWithCards.size());
+		
+		ObjectMapper obj = new ObjectMapper();
+		String result = obj.writeValueAsString(combinedResponse);
+		System.out.println(result);
+		return result;
+	}
+	
+	
+	//The following function returns the combined deck response on passing the page number- 
+	//This is paginated as 5 responses per page
+	@RequestMapping(value = "/users/user1/decks/combinedResponse/{pgNo}", method = RequestMethod.GET, produces = "application/json")
+	@ResponseBody
+	private String getCombinedResponseForPage(@PathVariable int pgNo,HttpServletRequest request) 
+											throws JsonProcessingException{
+		HashMap<Integer,DeckWithCards> deckWithCards = new LinkedHashMap<Integer,DeckWithCards>
+		(deckConstants.getDeckWithCards());
+		//Check if the given page number is within the range of the pages divided		
+		if(pgNo > Math.ceil(deckWithCards.size()/5.0)){
+			return "Page Number does not exist";
+		}	
+		
+		CombinedResponse combinedResponse = new CombinedResponse();
+		ArrayList<DeckWithCards> finalDeckList = new ArrayList<DeckWithCards>();
+		int startIndex = (pgNo-1)*5 +1;
+		int count = 5;
+		
+			while(count > 0){	
+				if(deckWithCards.containsKey(startIndex)){
+					finalDeckList.add(deckWithCards.get(startIndex));
+					startIndex++;
+					count--;
+				}
+				else{
+					break;
+				}			
+			}			
+		
+		combinedResponse.setDecks(finalDeckList);
+		
+		int nextPageToken =  (pgNo + 1 > Math.ceil(deckWithCards.size()/5.0)) ? 1 : (pgNo +1);
+		combinedResponse.setNextPageToken(nextPageToken);
+		combinedResponse.setResultSizeEstimate(deckWithCards.size());
 		
 		ObjectMapper obj = new ObjectMapper();
 		String result = obj.writeValueAsString(combinedResponse);
