@@ -1,4 +1,4 @@
-# Vurb_Coding_Exam
+# REST API Design for Deck of Cards
 
 The Environment set-up is as follows:
 1. The web-application was built as a Spring application.
